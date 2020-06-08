@@ -1,0 +1,1 @@
+dapr run --app-id order --app-port 3001 --port 3501 go run .

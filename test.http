@@ -1,0 +1,40 @@
+# invoke order actor
+POST http://localhost:3500/v1.0/actors/order/531133/method/create-order HTTP/1.1
+content-type: application/json
+
+
+
+### 
+PUT http://localhost:3500/v1.0/actors/order/1/reminders/check-sms HTTP/1.1
+content-type: application/json
+
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"0h0m5s0ms"
+}
+
+
+###
+GET http://localhost:3500/v1.0/actors/order/1/reminders/check-sms HTTP/1.1
+content-type: application/json
+
+###
+
+DELETE http://localhost:3500/v1.0/actors/order/1/reminders/check-sms HTTP/1.1
+content-type: application/json
+
+
+
+### publish to topic
+POST http://localhost:3500/v1.0/publish/create-order-request
+content-type: application/json
+
+{
+    "merchant_order_no": "6becbdf8-7e0f-4f43-bfdf-8fc861decbb3"
+}
+
+
+
+### create order
+POST http://localhost:3000/v1.0/orders
+content-type: application/json

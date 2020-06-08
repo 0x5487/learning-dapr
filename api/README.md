@@ -1,0 +1,1 @@
+dapr run --app-id api --app-port 3000 --port 3500 go run .
