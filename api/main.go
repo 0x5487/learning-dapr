@@ -39,8 +39,6 @@ type Message struct {
 	Order       Order  `json:"data"`
 }
 
-
-
 func main() {
 	// use console handler to log all level logs
 	clog := console.New()
@@ -156,8 +154,38 @@ func main() {
 
 	// order orchestration actor
 	router.Put("/actors/order-orchestration/:actorID/method/create-order-tx", func(c *napnap.Context) {
+		ctx := c.StdContext()
 		actorID := c.Param("actorID")
 		log.Debugf("tx: order creating: order_id: %s", actorID)
+
+		orch, err := NewOrchestration(actorID)
+		if err != nil {
+			c.String(500, err.Error())
+			return
+		}
+
+		switch orch.StateMachine.State() {
+		case "initial":
+			err = orch.StateMachine.Trigger(ctx, "order_created")
+			if err != nil {
+				c.String(500, err.Error())
+				return
+			}
+		case "order_created":
+			err = orch.StateMachine.Trigger(ctx, "order_paid")
+			if err != nil {
+				// change state to payment failed
+				c.String(500, err.Error())
+				return
+			}
+
+		case "order_paid":
+			err = orch.StateMachine.Trigger(ctx, "order_created")
+			if err != nil {
+				c.String(500, err.Error())
+				return
+			}
+		}
 
 		// get state first
 		val, err := dapr.ActorState("order-orchestration", actorID, "status")
