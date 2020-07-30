@@ -85,7 +85,18 @@ func main() {
 		c.SetStatus(200)
 	})
 
-	// state
+	// cron
+	router.Options("/mycron", func(c *napnap.Context) {
+		c.RespHeader("Allow", "POST")
+		c.RespHeader("Content-Type", "application/javascript")
+		c.SetStatus(200)
+	})
+
+	router.Post("/mycron", func(c *napnap.Context) {
+		log.Debugf("cron was triggered %s", time.Now())
+		time.Sleep(5 * time.Second)
+		c.SetStatus(200)
+	})
 
 	nap := napnap.New()
 	nap.Use(router)
