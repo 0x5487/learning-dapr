@@ -1,12 +1,32 @@
 # learning-dapr
 
-1. No SDK
+
+
+## Questions
+
+1. how to upgrade dapr without downtime on k8s (https://www.youtube.com/watch?v=HuJepZXng_c)
+
+
+
+## Benefit
+
+1. No SDK needed
+
+1. run on k8s or on-premises
+
 1. use Http to call GRPC
 
-dapr run --app-id order --app-port 3000 --port 3500 go run .
+1. grpc load-balancing 
+
+   https://github.com/dapr/dapr/issues/1444
 
 
-## Bindings
+
+
+
+### Bindings
+
+
 
 ### Cron
 
